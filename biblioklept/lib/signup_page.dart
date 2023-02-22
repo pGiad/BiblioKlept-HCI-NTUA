@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'favorite_genres.dart';
+import 'favorite_genres.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -54,10 +54,10 @@ class _SignUpFormState extends State<SignUpPage> {
 
       // Sign Up logic missing
 
-      //Navigator.push(
-        //context,
-        //MaterialPageRoute(builder: (context) => const FavoriteGenresPage()),
-      //);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FavoriteGenresPage()),
+      );
     } else {
       showDialog(
         context: context,
