@@ -7,9 +7,8 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Login Page',
+      title: 'BiblioKlept',
       home: Scaffold(
-        backgroundColor: Color.fromARGB(199, 255, 194, 174),
         body: Center(
           child: LoginForm(),
         ),
@@ -73,7 +72,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             const SizedBox(height: 16.0),
             Padding(
-              padding: const EdgeInsets.only(top: 250.0, bottom: 150.0),
+              padding: const EdgeInsets.only(top: 50.0, bottom: 60.0),
               child: Text(
                 'BiblioKlept',
                 style: Theme.of(context).textTheme.headline4?.copyWith(
@@ -81,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
@@ -94,7 +93,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               cursorColor: Colors.black,
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _passwordController,
               obscureText: true,
@@ -108,29 +107,27 @@ class _LoginFormState extends State<LoginForm> {
               ),
               cursorColor: Colors.black,
             ),
-            const SizedBox(height: 70.0),
+            const SizedBox(height: 40.0),
             ElevatedButton(
               onPressed: _canLogin ? _login : null,
-              child: const Text('Login'),
+              child: const Text('Login', style: TextStyle(fontSize: 18)),
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(
-                      255, 255, 225, 169), // sets the background color
-                  foregroundColor: const Color.fromARGB(
-                      199, 164, 85, 0), // sets the text color
+                      255, 112, 4, 80), // sets the background color
+                  foregroundColor: Colors.white, // sets the text color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   fixedSize: const Size(200, 40)),
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 50.0),
             Padding(
-              padding: const EdgeInsets.all(110.0),
+              padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
-                  Text(
-                    "Don't have an account?",
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
+                  Text("Don't have an account?",
+                      style: Theme.of(context).textTheme.bodyText2,
+                      textAlign: TextAlign.center),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -142,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(
-                        color: Color.fromARGB(199, 164, 85, 0),
+                        color: Color.fromARGB(255, 112, 4, 80),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
