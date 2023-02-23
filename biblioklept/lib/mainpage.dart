@@ -1,7 +1,10 @@
+import 'package:biblioklept/booksfound.dart';
+import 'package:biblioklept/booksnearyou.dart';
 import 'package:biblioklept/receivedrequests.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/detailsofbooks.dart";
 import "package:biblioklept/edit_profile_page.dart";
+import "package:biblioklept/savedqrcodes.dart";
 
 void main() {
   runApp(const BiblioKlept());
@@ -29,6 +32,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
+    String searchQuery = " ";
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -64,7 +68,15 @@ class _MainPageState extends State<MainPage> {
                         value: 2,
                       ),
                       PopupMenuItem(
-                        child: Text('Books near you'),
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BooksNearYouPage()),
+                              );
+                            },
+                            child: Text('Books near you')),
                         value: 3,
                       ),
                       PopupMenuItem(
@@ -93,8 +105,16 @@ class _MainPageState extends State<MainPage> {
                         value: 5,
                       ),
                       PopupMenuItem(
-                        child: Text('Saved QR codes'),
-                        value: 6,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SavedQRCodesPage()),
+                              );
+                            },
+                            child: Text('Saved QR codes')),
+                        value: 5,
                       ),
                     ],
                   );
@@ -107,12 +127,20 @@ class _MainPageState extends State<MainPage> {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
+                  onChanged: (value) {
+                    searchQuery = value;
+                  },
                 ),
               ),
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  // Perform search action here
+                  if (searchQuery.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BooksFoundPage()),
+                    );
+                  }
                 },
               ),
             ],
