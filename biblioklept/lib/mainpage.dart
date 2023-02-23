@@ -1,4 +1,7 @@
+import 'package:biblioklept/receivedrequests.dart';
 import 'package:flutter/material.dart';
+import "package:biblioklept/detailsofbooks.dart";
+import "package:biblioklept/edit_profile_page.dart";
 
 void main() {
   runApp(const BiblioKlept());
@@ -11,23 +14,24 @@ class BiblioKlept extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BiblioKlept',
-      home: SearchPage(),
+      home: MainPage(),
     );
   }
 }
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           decoration: BoxDecoration(
             color: Colors.grey[300],
@@ -61,19 +65,36 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       PopupMenuItem(
                         child: Text('Books near you'),
-                        value: 2,
+                        value: 3,
                       ),
                       PopupMenuItem(
-                        child: Text('Edit Profile'),
-                        value: 2,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProfilePage()),
+                              );
+                            },
+                            child: Text('Edit Profile')),
+                        value: 4,
                       ),
                       PopupMenuItem(
-                        child: Text('Requests for trade'),
-                        value: 2,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReceivedRequestsPage()),
+                              );
+                            },
+                            child: Text('Requests for trade')),
+                        value: 5,
                       ),
                       PopupMenuItem(
                         child: Text('Saved QR codes'),
-                        value: 2,
+                        value: 6,
                       ),
                     ],
                   );
@@ -135,22 +156,43 @@ class _SearchPageState extends State<SearchPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.book, size: 50),
-                            Text('Book $index'),
+                            Text('Book ${index + 10}'),
                             SizedBox(height: 8),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue[100],
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                vertical: 4,
-                                horizontal: 8,
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailsPage(
+                                        title: 'Harry Potter',
+                                        username: "pgiad",
+                                        author: "JK Rowling",
+                                        publisher: "Symmetria",
+                                        summary: "...",
+                                        pages: 565,
+                                        category: "Fantasy",
+                                        condition: "Good",
+                                        year: 2022,
+                                        address: "Athens",
+                                        email: "pgiad@gmail.com"),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue[100],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 8,
+                                ),
                               ),
                               child: Text(
                                 'Details',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
                               ),
                             ),
                           ],
@@ -191,20 +233,41 @@ class _SearchPageState extends State<SearchPage> {
                             Icon(Icons.book, size: 50),
                             Text('Book ${index + 10}'),
                             SizedBox(height: 8),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue[100],
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                vertical: 4,
-                                horizontal: 8,
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailsPage(
+                                        title: 'Harry Potter',
+                                        username: "pgiad",
+                                        author: "JK Rowling",
+                                        publisher: "Symmetria",
+                                        summary: "...",
+                                        pages: 565,
+                                        category: "Fantasy",
+                                        condition: "Good",
+                                        year: 2022,
+                                        address: "Athens",
+                                        email: "pgiad@gmail.com"),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue[100],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 8,
+                                ),
                               ),
                               child: Text(
                                 'Details',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
                               ),
                             ),
                           ],
