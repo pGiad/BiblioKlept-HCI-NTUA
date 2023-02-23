@@ -212,10 +212,10 @@ class _ContactFormPageState extends State<ContactFormPage> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                    );
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                      return count++ == 3;
+                    });
                   },
                   child: Text('Submit request'),
                 ),
