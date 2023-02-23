@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'mainpage.dart';
 
 class FavoriteGenresPage extends StatefulWidget {
   const FavoriteGenresPage({Key? key}) : super(key: key);
@@ -24,7 +25,8 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
     'Literature',
     'Fantasy',
     'Kids',
-    'Cooking'
+    'Cooking',
+    'Other'
   ];
   List<String> _selectedGenres = [];
 
@@ -96,8 +98,10 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
             )
           : FloatingActionButton.extended(
               onPressed: () {
-                // Navigate back to the previous screen with the selected genres
-                // Navigator.pop(context, _selectedGenres);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainPage()),
+                );
               },
               label: const Text('Save'),
               icon: const Icon(Icons.save),
