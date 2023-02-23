@@ -1,3 +1,4 @@
+import 'package:biblioklept/selectbookfortrade.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -156,7 +157,13 @@ class BookDetailsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectBookforTrade()),
+                    );
+                  },
                   child: Text('Select the book you want to trade for'),
                 ),
                 SizedBox(height: 30),
