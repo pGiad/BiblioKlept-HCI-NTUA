@@ -1,4 +1,5 @@
 import 'package:biblioklept/login_page.dart';
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -136,53 +137,50 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 cursorColor: Colors.black,
               ),
-                      const SizedBox(height: 16.0),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: 'Password',
-              labelStyle: const TextStyle(color: Colors.black54),
-              border: const OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            cursorColor: Colors.black,
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()), //profanws den tha einai edw to LoginPage alla MainPage
-                      );
-            },
-            child: const Text('Save Changes'),
-          ),
-        const SizedBox(height: 20.0),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()), //to idio kai edw
-                      );
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: Color.fromARGB(198, 201, 26, 3),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: const TextStyle(color: Colors.black54),
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ],
+                ),
+                cursorColor: Colors.black,
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
+                child: const Text('Save Changes'),
+              ),
+              const SizedBox(height: 20.0),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                  );
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Color.fromARGB(198, 201, 26, 3),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    ),
-  ),
-);
+    );
+  }
 }
-}
-

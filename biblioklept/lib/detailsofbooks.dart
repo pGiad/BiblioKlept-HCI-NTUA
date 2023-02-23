@@ -163,18 +163,6 @@ class BookDetailsPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Cancel'),
-                ),
-                SizedBox(height: 30),
-              ],
-            ),
-          ),
         ],
       ),
     );
