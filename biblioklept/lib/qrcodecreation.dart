@@ -32,8 +32,19 @@ class GeneratedQRCodePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generated QR code'),
+        automaticallyImplyLeading: false,
+        toolbarHeight: 100,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0,
         centerTitle: true,
+        title: const Text(
+          'Generated QR Code',
+          style: TextStyle(
+              color: Color.fromARGB(255, 112, 4, 80),
+              fontSize: 32,
+              fontFamily: 'Langar-Regular'),
+        ),
       ),
       body: Center(
         child: QrImage(
@@ -44,19 +55,25 @@ class GeneratedQRCodePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: Icon(Icons.save),
+                icon: const Icon(
+                  Icons.save,
+                  color: Color.fromARGB(255, 112, 4, 80),
+                  size: 35.0,
+                ),
                 onPressed: () {
                   saveQrCode(context, data);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ReceivedRequestsPage()),
+                        builder: (context) => const ReceivedRequestsPage()),
                   );
                 },
               ),
