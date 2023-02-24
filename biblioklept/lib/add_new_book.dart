@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import "package:biblioklept/camera.dart";
+import 'package:camera/camera.dart';
 
 void main() {
   runApp(const BiblioKlept());
@@ -372,7 +374,19 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
                                       width: 85,
                                       height: 70,
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await availableCameras().then(
+                                            (value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CameraPage(
+                                                  cameras: value,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color.fromARGB(
                                               255, 112, 4, 80),
@@ -409,7 +423,19 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
                                       width: 85,
                                       height: 70,
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await availableCameras().then(
+                                            (value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CameraPage(
+                                                  cameras: value,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color.fromARGB(
                                               255, 112, 4, 80),
