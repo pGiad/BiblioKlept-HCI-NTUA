@@ -1,10 +1,27 @@
 import 'package:biblioklept/booksfound.dart';
 import 'package:biblioklept/booksnearyou.dart';
+import 'package:biblioklept/mybooks.dart';
 import 'package:biblioklept/receivedrequests.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/detailsofbooks.dart";
 import "package:biblioklept/edit_profile_page.dart";
 import "package:biblioklept/savedqrcodes.dart";
+
+void main() {
+  runApp(const BiblioKlept());
+}
+
+class BiblioKlept extends StatelessWidget {
+  const BiblioKlept({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'BiblioKlept',
+      home: MainPage(),
+    );
+  }
+}
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -35,8 +52,16 @@ class _MainPageState extends State<MainPage> {
                     position: RelativeRect.fromLTRB(20, 70, 30, 0),
                     items: [
                       PopupMenuItem(
-                        child: Text('My Books'),
-                        value: 1,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyBooksPage()),
+                              );
+                            },
+                            child: Text('My Books')),
+                        value: 3,
                       ),
                       PopupMenuItem(
                         child: Row(
