@@ -177,6 +177,7 @@ class _EditBookPageState extends State<EditBookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 100,
           elevation: 0,
           backgroundColor: Colors.transparent,

@@ -269,7 +269,6 @@ class _SignUpFormState extends State<SignUpPage> {
                     const SizedBox(height: 70.0),
                     ElevatedButton(
                       onPressed: _canSignUp ? _signUp : null,
-                      child: const Text('Sign Up'),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(
                               255, 112, 4, 80), // sets the background color
@@ -278,6 +277,7 @@ class _SignUpFormState extends State<SignUpPage> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           fixedSize: const Size(200, 40)),
+                      child: const Text('Sign Up'),
                     ),
                   ],
                 ),

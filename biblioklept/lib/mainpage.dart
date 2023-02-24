@@ -3,22 +3,6 @@ import 'package:flutter/material.dart';
 import "package:biblioklept/detailsofbooks.dart";
 import "package:biblioklept/edit_profile_page.dart";
 
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BiblioKlept',
-      home: MainPage(),
-    );
-  }
-}
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -168,7 +152,8 @@ class _MainPageState extends State<MainPage> {
                                         username: "pgiad",
                                         author: "JK Rowling",
                                         publisher: "Symmetria",
-                                        summary: "...",
+                                        summary:
+                                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis nulla sed nisl eleifend vestibulum. Nulla facilisi. Morbi vel sapien pharetra, feugiat nibh ut, bibendum orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse nec odio at sem efficitur convallis. Nullam sodales metus vel augue vulputate, in semper velit suscipit. Donec venenatis tortor id felis elementum lobortis. Nam eget sem vitae risus lacinia facilisis. Aliquam ullamcorper dictum elit at pretium. Sed viverra libero et sapien euismod dapibusPellentesque auctor nibh ut enim tincidunt tristique. Donec ullamcorper ipsum vel magna auctor efficitur. Integer euismod ultricies est, in convallis neque hendrerit ac. Praesent efficitur convallis libero, vitae venenatis eros hendrerit nec. Proin rutrum aliquet dolor a vestibulum. Aliquam id tortor id ante sollicitudin interdum non et velit. Nunc congue eleifend ex, at scelerisque mi gravida vel. Phasellus eget enim sit amet dolor dictum scelerisque. Vivamus ullamcorper libero at elit bibendum, in blandit sapien consequat. Vivamus vel ante nisl. Sed eleifend quam sit amet libero luctus, ut tristique ex efficitur. Curabitur quis mollis purus, nec gravida nunc. Suspendisse potenti. Sed volutpat, quam at imperdiet dignissim, purus ante tempor ante, ut consectetur velit tortor vitae leo.Fusce volutpat, enim nec elementum rutrum",
                                         pages: 565,
                                         category: "Fantasy",
                                         condition: "Good",

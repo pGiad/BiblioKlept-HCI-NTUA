@@ -1,9 +1,4 @@
-import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const BiblioKlept());
-}
 
 enum Gender { male, female, other }
 
