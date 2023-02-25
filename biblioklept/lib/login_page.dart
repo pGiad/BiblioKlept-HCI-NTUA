@@ -2,6 +2,22 @@ import 'package:flutter/material.dart';
 import 'signup_page.dart';
 import 'mainpage.dart';
 
+void main() {
+  runApp(const BiblioKlept());
+}
+
+class BiblioKlept extends StatelessWidget {
+  const BiblioKlept({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'BiblioKlept',
+      home: LoginPage(),
+    );
+  }
+}
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 

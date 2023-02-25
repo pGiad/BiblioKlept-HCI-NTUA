@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BiblioKlept',
-      home: ContactFormPage(),
-    );
-  }
-}
-
 class ContactFormPage extends StatefulWidget {
+  const ContactFormPage({super.key});
+
   @override
   _ContactFormPageState createState() => _ContactFormPageState();
 }
@@ -46,11 +32,15 @@ class _ContactFormPageState extends State<ContactFormPage> {
     String email = _emailController.text;
     String phoneNum = _phoneNumberController.text;
     String address = _addressController.text;
+    DateTime date = _selectedDate;
+    TimeOfDay time = _selectedTime;
 
     print('Fullname: $fullname');
     print('Email: $email');
     print('Phone Number: $phoneNum');
     print('Address: $address');
+    print('Date: $date');
+    print('Time: $time');
 
     // Send Request logic missing
 
@@ -77,15 +67,6 @@ class _ContactFormPageState extends State<ContactFormPage> {
     _phoneNumberController.addListener(_updateCanSendRequest);
     _addressController.addListener(_updateCanSendRequest);
   }
-
-  // late String _fullName;
-  // late String _email;
-  // late String _phoneNumber;
-  // late String _address;
-  // late String _preferredDayOfWeek = "Monday";
-  // late String _preferredDayOfMonth = "12";
-  // late String _preferredMonth = "January";
-  // late String _preferredHour = "9:00 AM";
 
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();

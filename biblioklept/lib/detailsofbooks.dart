@@ -237,14 +237,14 @@ class BookDetailsPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SelectBookforTrade()),
+                                  builder: (context) =>
+                                      const SelectBookforTrade()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(
-                                  255, 112, 4, 80), // sets the background color
-                              foregroundColor:
-                                  Colors.white, // sets the text color
+                              backgroundColor:
+                                  const Color.fromARGB(255, 112, 4, 80),
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
