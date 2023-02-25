@@ -8,16 +8,22 @@ class SavedQRCodesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 70,
+          toolbarHeight: 100,
           elevation: 0,
           backgroundColor: Colors.transparent,
           bottomOpacity: 0,
-          leading: const BackButton(
-            color: Color.fromARGB(255, 112, 4, 80),
+          leading: BackButton(
+            color: const Color.fromARGB(255, 112, 4, 80),
+            onPressed: () {
+              int count = 0;
+              Navigator.popUntil(context, (route) {
+                return count++ == 2;
+              });
+            },
           ),
           centerTitle: true,
           title: const Text(
-            "Saved QR Codes",
+            "QR of Accepted\nRequests",
             style: TextStyle(
                 color: Color.fromARGB(255, 112, 4, 80),
                 fontSize: 32,

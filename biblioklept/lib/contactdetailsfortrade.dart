@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BiblioKlept',
-      home: ContactFormPage(),
-    );
-  }
-}
-
 class ContactFormPage extends StatefulWidget {
+  const ContactFormPage({super.key});
+
   @override
   _ContactFormPageState createState() => _ContactFormPageState();
 }

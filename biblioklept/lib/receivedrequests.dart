@@ -12,7 +12,6 @@ class ReceivedRequestsPage extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           bottomOpacity: 0,
-          automaticallyImplyLeading: false,
           title: const Text(
             'Received Requests',
             style: TextStyle(
@@ -21,8 +20,7 @@ class ReceivedRequestsPage extends StatelessWidget {
                 fontFamily: 'Langar-Regular'),
           ),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.home),
+          leading: BackButton(
             color: const Color.fromARGB(255, 112, 4, 80),
             onPressed: () {
               int count = 0;
@@ -69,7 +67,8 @@ class ReceivedRequestsPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => InfoRequestedTradePage()),
+                                builder: (context) =>
+                                    const InfoRequestedTradePage()),
                           );
                         },
                         child: Padding(
