@@ -30,7 +30,8 @@ class _SignUpFormState extends State<SignUpPage> {
       password: '',
       email: '',
       address: '',
-      gender: '');
+      gender: '',
+      categories: []);
 
   bool _canSignUp = false;
 
@@ -65,7 +66,8 @@ class _SignUpFormState extends State<SignUpPage> {
           email: email,
           address: address,
           gender: enumToString(gender),
-          age: age);
+          age: age,
+          categories: []);
 
       final newID = await sqLiteService.addUser(_newUser);
       _newUser.id = newID;

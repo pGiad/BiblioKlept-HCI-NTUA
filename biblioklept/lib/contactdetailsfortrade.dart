@@ -1,3 +1,4 @@
+import 'package:biblioklept/main.dart';
 import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,8 @@ class _ContactFormPageState extends State<ContactFormPage> {
   final _emailController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _addressController = TextEditingController();
+
+  late User currentUser;
 
   bool _canSendRequest = false;
 
@@ -47,7 +50,9 @@ class _ContactFormPageState extends State<ContactFormPage> {
 
     Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return const MainPage();
+      return MainPage(
+        user: currentUser,
+      );
     }), (r) {
       return false;
     });
@@ -65,6 +70,7 @@ class _ContactFormPageState extends State<ContactFormPage> {
   @override
   void initState() {
     super.initState();
+    // currentUser = widget.user;
     _fullnameController.addListener(_updateCanSendRequest);
     _emailController.addListener(_updateCanSendRequest);
     _phoneNumberController.addListener(_updateCanSendRequest);
@@ -167,7 +173,9 @@ class _ContactFormPageState extends State<ContactFormPage> {
                       onTap: () {
                         Navigator.pushAndRemoveUntil(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return const MainPage();
+                          return MainPage(
+                            user: currentUser,
+                          );
                         }), (r) {
                           return false;
                         });

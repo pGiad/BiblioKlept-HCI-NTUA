@@ -28,6 +28,7 @@ class User {
   String? gender;
   int? age;
   String? address;
+  List<String>? categories;
 
   User(
       {this.id,
@@ -37,7 +38,8 @@ class User {
       this.password,
       this.gender,
       this.age,
-      this.address});
+      this.address,
+      this.categories});
 
   User.fromMap(Map<String, dynamic> user)
       : id = user['id'],
@@ -47,7 +49,8 @@ class User {
         email = user['email'],
         gender = user['gender'],
         age = user['age'],
-        address = user['address'];
+        address = user['address'],
+        categories = (user['categories'] as String?)?.split(',');
 
   Map<String, dynamic> toMap() {
     final record = {
@@ -58,7 +61,8 @@ class User {
       'email': email,
       'gender': gender,
       'age': age,
-      'address': address
+      'address': address,
+      'categories': categories?.join(','),
     };
     return record;
   }
@@ -80,7 +84,8 @@ class SQLiteService {
             email TEXT,
             gender TEXT,
             age INTEGER,
-            address TEXT
+            address TEXT,
+            categories TEXT
           )
           ''');
       },

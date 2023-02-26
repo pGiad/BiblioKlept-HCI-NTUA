@@ -1,9 +1,18 @@
 import 'package:biblioklept/detailsofbooks.dart';
+import 'package:biblioklept/main.dart';
 import 'package:flutter/material.dart';
 import 'mainpage.dart';
 
 class BooksFoundPage extends StatelessWidget {
-  const BooksFoundPage({super.key});
+  BooksFoundPage({super.key});
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    // super.initState();
+    // currentUser = widget.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +35,9 @@ class BooksFoundPage extends StatelessWidget {
             onPressed: () {
               Navigator.pushAndRemoveUntil(context,
                   MaterialPageRoute(builder: (BuildContext context) {
-                return const MainPage();
+                return MainPage(
+                  user: currentUser,
+                );
               }), (r) {
                 return false;
               });

@@ -3,22 +3,6 @@ import 'package:biblioklept/main.dart';
 import 'signup_page.dart';
 import 'mainpage.dart';
 
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BiblioKlept',
-      home: LoginPage(),
-    );
-  }
-}
-
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
@@ -48,6 +32,7 @@ class _LoginFormState extends State<LoginForm> {
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  late User _authenticated_user = User(username: '', password: '');
 
   bool _canLogin = false;
 
@@ -62,17 +47,39 @@ class _LoginFormState extends State<LoginForm> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    // Your login logic here
-
-    print('Username: $username');
-    print('Password: $password');
-
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return const MainPage();
-    }), (r) {
-      return false;
-    });
+    final matchedUser = _users.any(
+      (user) => user.username == username && user.password == password,
+    );
+    if (matchedUser) {
+      _authenticated_user = _users.firstWhere(
+        (user) => user.username == username && user.password == password,
+      );
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (BuildContext context) {
+        return MainPage(user: _authenticated_user);
+      }), (r) {
+        return false;
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Invalid Credentials"),
+          content: const Text("Your username or password is incorrect."),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                "OK",
+                style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void _updateCanLogin() {

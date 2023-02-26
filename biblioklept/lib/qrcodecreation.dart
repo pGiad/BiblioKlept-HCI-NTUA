@@ -1,9 +1,18 @@
+import 'package:biblioklept/main.dart';
 import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class GeneratedQRCodePage extends StatelessWidget {
-  const GeneratedQRCodePage({Key? key}) : super(key: key);
+  GeneratedQRCodePage({Key? key}) : super(key: key);
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    // super.initState();
+    // currentUser = widget.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +61,9 @@ class GeneratedQRCodePage extends StatelessWidget {
                   saveQrCode(context, data);
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return const MainPage();
+                    return MainPage(
+                      user: currentUser,
+                    );
                   }), (r) {
                     return false;
                   });

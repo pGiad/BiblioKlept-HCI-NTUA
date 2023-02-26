@@ -1,3 +1,4 @@
+import 'package:biblioklept/main.dart';
 import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
@@ -21,6 +22,8 @@ class _EditBookPageState extends State<EditBookPage> {
   String? _categoryController;
   Condition? _conditionController;
   int? _yearofpurchaseController;
+
+  late User currentUser;
 
   bool _canSaveChanges = false;
 
@@ -49,7 +52,9 @@ class _EditBookPageState extends State<EditBookPage> {
                     onPressed: ((() {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return const MainPage();
+                        return MainPage(
+                          user: currentUser,
+                        );
                       }));
                     })),
                     style: TextButton.styleFrom(
@@ -124,6 +129,7 @@ class _EditBookPageState extends State<EditBookPage> {
   @override
   void initState() {
     super.initState();
+    // currentUser = widget.user;
     _titleController.addListener(_updateCanSaveChanges);
     _authorController.addListener(_updateCanSaveChanges);
     _publisherController.addListener(_updateCanSaveChanges);

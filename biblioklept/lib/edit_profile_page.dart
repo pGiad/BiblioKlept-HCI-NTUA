@@ -1,27 +1,20 @@
+import 'package:biblioklept/main.dart';
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 
-enum Gender { male, female, other }
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'BiblioKlept',
-      home: EditProfilePage(),
-    );
-  }
-}
-
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  late User user;
+  EditProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
+enum Gender { male, female, other }
+
 class _EditProfilePageState extends State<EditProfilePage> {
+  late SQLiteService sqLiteService;
+
   final _emailController = TextEditingController();
   final _fullnameController = TextEditingController();
   final _usernameController = TextEditingController();
@@ -33,6 +26,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final _repeatPasswordController = TextEditingController();
 
   bool _canUpdateProfile = false;
+
+  late User currentUser;
+  List<User> _users = <User>[];
 
   @override
   void dispose() {
@@ -46,7 +42,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
-  void _updateProfile() {
+  Future<void> _updateProfile() async {
     String fullname = _fullnameController.text;
     String username = _usernameController.text;
     String email = _emailController.text;
@@ -56,7 +52,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
     String password = _passwordController.text;
     String repeatedPassword = _repeatPasswordController.text;
 
-    if (password != repeatedPassword) {
+    final matchedUser = _users.any(
+        (user) => (user.username == username && user.id != currentUser.id));
+
+    if (password == repeatedPassword && !matchedUser) {
+      currentUser = User(
+          id: widget.user.id,
+          username: username,
+          fullname: fullname,
+          password: password,
+          email: email,
+          address: address,
+          gender: enumToString(gender),
+          age: age);
+
+      await sqLiteService.updateUser(currentUser);
+
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => MainPage(user: currentUser)),
+          (r) {
+        return false;
+      });
+    } else if (password != repeatedPassword) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -73,12 +90,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ],
         ),
       );
-    } else if (password.isEmpty) {
+    } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Empty Password"),
-          content: const Text("Please make sure you have a password."),
+          title: const Text("Username exists"),
+          content: const Text("Please pick another username."),
           actions: <Widget>[
             TextButton(
               child: const Text(
@@ -90,19 +107,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ],
         ),
       );
-    } else {
-      print('Fullname: $fullname');
-      print('Username: $username');
-      print('Email: $email');
-      print('Age: $age');
-      print('Gender: $gender');
-      print('Address: $address');
-      print('Password: $password');
-      // Update Profile logic missing
-      int count = 0;
-      Navigator.popUntil(context, (route) {
-        return count++ == 2;
-      });
     }
   }
 
@@ -122,6 +126,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final users = await sqLiteService.getUsers();
+      setState(() {
+        _users = users;
+      });
+    });
+    currentUser = widget.user;
     _fullnameController.addListener(_updateCanProfile);
     _usernameController.addListener(_updateCanProfile);
     _emailController.addListener(_updateCanProfile);
@@ -183,7 +195,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     padding: const EdgeInsets.all(16.0),
                     child: SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 16.0),
                           TextField(
@@ -320,10 +332,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             onPressed:
                                 _canUpdateProfile ? _updateProfile : null,
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 112,
-                                    4, 80), // sets the background color
-                                foregroundColor:
-                                    Colors.white, // sets the text color
+                                backgroundColor:
+                                    const Color.fromARGB(255, 112, 4, 80),
+                                foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
@@ -340,6 +351,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               });
                             },
                             style: TextButton.styleFrom(
+                                fixedSize: const Size(100, 50),
                                 foregroundColor:
                                     const Color.fromARGB(255, 112, 4, 80)),
                             child: const Text(

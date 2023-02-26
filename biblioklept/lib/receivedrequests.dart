@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import "package:biblioklept/info_of_requestedtade.dart";
 
 class ReceivedRequestsPage extends StatelessWidget {
-  const ReceivedRequestsPage({super.key});
+  ReceivedRequestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +67,7 @@ class ReceivedRequestsPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const InfoRequestedTradePage()),
+                                builder: (context) => InfoRequestedTradePage()),
                           );
                         },
                         child: Padding(

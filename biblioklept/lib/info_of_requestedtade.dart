@@ -1,9 +1,18 @@
+import 'package:biblioklept/main.dart';
 import 'package:biblioklept/mainpage.dart';
 import 'package:biblioklept/qrcodecreation.dart';
 import 'package:flutter/material.dart';
 
 class InfoRequestedTradePage extends StatelessWidget {
-  const InfoRequestedTradePage({super.key});
+  InfoRequestedTradePage({super.key});
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    // super.initState();
+    // currentUser = widget.user;
+  }
 
   void _deleteReceivedRequest(context) {
     showDialog(
@@ -22,7 +31,9 @@ class InfoRequestedTradePage extends StatelessWidget {
             onPressed: () {
               Navigator.pushAndRemoveUntil(context,
                   MaterialPageRoute(builder: (BuildContext context) {
-                return const MainPage();
+                return MainPage(
+                  user: currentUser,
+                );
               }), (r) {
                 return false;
               });
@@ -59,8 +70,7 @@ class InfoRequestedTradePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const GeneratedQRCodePage()),
+                MaterialPageRoute(builder: (context) => GeneratedQRCodePage()),
               );
             },
           ),

@@ -11,6 +11,8 @@ class FavoriteGenresPage extends StatefulWidget {
 }
 
 class _FavoriteGenresState extends State<FavoriteGenresPage> {
+  late SQLiteService sqLiteService;
+
   // Declare any necessary variables or lists here
   final List<String> _genreList = [
     'Art',
@@ -38,6 +40,11 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
   void initState() {
     super.initState();
     currentUser = widget.user;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final users = await sqLiteService.getUsers();
+      setState(() {});
+    });
   }
 
   // Create a method to handle changes to checkbox states
@@ -107,10 +114,23 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
               disabledElevation: 0,
             )
           : FloatingActionButton.extended(
-              onPressed: () {
+              onPressed: () async {
+                currentUser = User(
+                    id: widget.user.id,
+                    username: widget.user.username,
+                    fullname: widget.user.fullname,
+                    password: widget.user.password,
+                    email: widget.user.email,
+                    address: widget.user.address,
+                    gender: widget.user.gender,
+                    age: widget.user.age,
+                    categories: _selectedGenres);
+
+                await sqLiteService.updateUser(currentUser);
+
                 Navigator.pushAndRemoveUntil(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return const MainPage();
+                  return MainPage(user: currentUser);
                 }), (r) {
                   return false;
                 });

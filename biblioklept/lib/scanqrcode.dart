@@ -1,3 +1,4 @@
+import 'package:biblioklept/main.dart';
 import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -19,6 +20,14 @@ class _ScanQRPageState extends State<ScanQRPage> {
     setState(() {
       _qrCode = qrCode;
     });
+  }
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    // currentUser = widget.user;
   }
 
   @override
@@ -50,7 +59,9 @@ class _ScanQRPageState extends State<ScanQRPage> {
                   onTap: () {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (BuildContext context) {
-                      return const MainPage();
+                      return MainPage(
+                        user: currentUser,
+                      );
                     }));
                   },
                   child: const Icon(

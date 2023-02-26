@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import "package:biblioklept/detailsofbooks.dart";
 import "package:biblioklept/edit_profile_page.dart";
 import "package:biblioklept/savedqrcodes.dart";
+import "package:biblioklept/main.dart";
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  late User user;
+  MainPage({Key? key, required this.user}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -31,6 +33,14 @@ class _MainPageState extends State<MainPage> {
     'Mystery',
     'Literature',
   ];
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +116,7 @@ class _MainPageState extends State<MainPage> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const BooksFoundPage()),
+                                                                  BooksFoundPage()),
                                                         );
                                                       },
                                                       child: ListTile(
@@ -171,7 +181,7 @@ class _MainPageState extends State<MainPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const ReceivedRequestsPage()),
+                                                ReceivedRequestsPage()),
                                       );
                                     },
                                     child: const ListTile(
@@ -211,7 +221,9 @@ class _MainPageState extends State<MainPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const EditProfilePage()),
+                                                EditProfilePage(
+                                                  user: currentUser,
+                                                )),
                                       );
                                     },
                                     child: const ListTile(
@@ -252,8 +264,7 @@ class _MainPageState extends State<MainPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BooksFoundPage()),
+                                    builder: (context) => BooksFoundPage()),
                               );
                             }
                           },
