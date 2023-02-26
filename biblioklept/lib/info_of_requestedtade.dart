@@ -13,6 +13,8 @@ class InfoRequestedTradePage extends StatelessWidget {
         content: const Text("Are you sure you want to delete this request?"),
         actions: <Widget>[
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
             child: const Text(
               "Yes",
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
@@ -26,6 +28,8 @@ class InfoRequestedTradePage extends StatelessWidget {
             },
           ),
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
             child: const Text(
               "No",
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
@@ -45,11 +49,14 @@ class InfoRequestedTradePage extends StatelessWidget {
         content: const Text("Are you sure you want to approve this request?"),
         actions: <Widget>[
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
             child: const Text(
               "Yes",
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
             ),
             onPressed: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -58,11 +65,13 @@ class InfoRequestedTradePage extends StatelessWidget {
             },
           ),
           TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
+            onPressed: () => Navigator.pop(context),
             child: const Text(
               "No",
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
             ),
-            onPressed: () => Navigator.pop(context),
           ),
         ],
       ),

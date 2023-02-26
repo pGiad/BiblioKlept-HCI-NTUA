@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'BiblioKlept',
-      home: EditBookPage(),
-    );
-  }
-}
 
 class EditBookPage extends StatefulWidget {
   const EditBookPage({Key? key}) : super(key: key);
@@ -63,7 +45,12 @@ class _EditBookPageState extends State<EditBookPage> {
                         foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
                     child: const Text('Cancel')),
                 TextButton(
-                    onPressed: ((() => Navigator.pop(context, true))),
+                    onPressed: ((() {
+                      int count = 0;
+                      Navigator.popUntil(context, (route) {
+                        return count++ == 2;
+                      });
+                    })),
                     style: TextButton.styleFrom(
                         foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
                     child: const Text('Yes')),
@@ -116,11 +103,8 @@ class _EditBookPageState extends State<EditBookPage> {
     print('Condition: $condition');
     print('Year of Purchase: $year');
 
-    // Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => const LoginPage()), //Front Book cover Page
-    //         );
+    int count = 0;
+    Navigator.pop(context);
   }
 
   void _updateCanSaveChanges() {
