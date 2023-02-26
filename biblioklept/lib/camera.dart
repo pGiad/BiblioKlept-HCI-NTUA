@@ -65,7 +65,17 @@ class _CameraPageState extends State<CameraPage> {
               pictureFile = await controller.takePicture();
               setState(() {});
             },
-            child: const Text('Capture Image'),
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                backgroundColor: const Color.fromARGB(255, 112, 4, 80),
+                foregroundColor: Colors.white,
+                fixedSize: const Size(120, 40)),
+            child: const Icon(
+              Icons.photo_camera,
+              size: 30,
+            ),
           ),
         ),
         if (pictureFile != null)
@@ -73,7 +83,10 @@ class _CameraPageState extends State<CameraPage> {
             children: [
               Image.file(
                 File(pictureFile!.path),
-                height: 200,
+                height: 180,
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,16 +95,26 @@ class _CameraPageState extends State<CameraPage> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save Image'),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        backgroundColor: const Color.fromARGB(255, 112, 4, 80),
+                        foregroundColor: Colors.white,
+                        fixedSize: const Size(120, 40)),
+                    child: const Text(
+                      'Save Image',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        pictureFile = null;
-                      });
-                    },
-                    child: const Text('Take Another Picture'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       pictureFile = null;
+                  //     });
+                  //   },
+                  //   child: const Text('Take Another Picture'),
+                  // ),
                 ],
               ),
             ],
