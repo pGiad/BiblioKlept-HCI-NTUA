@@ -171,26 +171,6 @@ class _MainPageState extends State<MainPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const EditProfilePage()),
-                                      );
-                                    },
-                                    child: const ListTile(
-                                      title: Text(
-                                        'Edit Profile',
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 112, 4, 80)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
                                                 const ReceivedRequestsPage()),
                                       );
                                     },
@@ -217,6 +197,26 @@ class _MainPageState extends State<MainPage> {
                                     child: const ListTile(
                                       title: Text(
                                         'Saved QR Codes',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 112, 4, 80)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const EditProfilePage()),
+                                      );
+                                    },
+                                    child: const ListTile(
+                                      title: Text(
+                                        'Edit Profile',
                                         style: TextStyle(
                                             color: Color.fromARGB(
                                                 255, 112, 4, 80)),
