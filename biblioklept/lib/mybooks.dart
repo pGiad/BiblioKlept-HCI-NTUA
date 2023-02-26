@@ -89,7 +89,10 @@ class MyBooksPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(Icons.book, size: 50),
-                                Text('Book ${index + 1}'),
+                                Text(
+                                  'Book ${index + 1}',
+                                  textAlign: TextAlign.center,
+                                ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: () {
@@ -154,14 +157,18 @@ class MyBooksPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(Icons.book, size: 50),
-                                Text('Book ${index + 1}'),
+                                Text(
+                                  'Book ${index + 1}',
+                                  textAlign: TextAlign.center,
+                                ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ScanQRPage()),
+                                          builder: (context) =>
+                                              const ScanQRPage()),
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -218,7 +225,10 @@ class MyBooksPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(Icons.book, size: 50),
-                                Text('Book ${index + 1}'),
+                                Text(
+                                  'Book ${index + 1}',
+                                  textAlign: TextAlign.center,
+                                ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: () {
@@ -301,7 +311,10 @@ class MyBooksPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(Icons.book, size: 50),
-                                Text('Book ${index + 1}'),
+                                Text(
+                                  'Book ${index + 1}',
+                                  textAlign: TextAlign.center,
+                                ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
                                   onPressed: () {

@@ -313,7 +313,10 @@ class _MainPageState extends State<MainPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             const Icon(Icons.book, size: 50),
-                                            Text('Book ${index + 10}'),
+                                            Text(
+                                              'Book ${index + 10}',
+                                              textAlign: TextAlign.center,
+                                            ),
                                             const SizedBox(height: 8),
                                             ElevatedButton(
                                               onPressed: () {
@@ -406,7 +409,10 @@ class _MainPageState extends State<MainPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             const Icon(Icons.book, size: 50),
-                                            Text('Book ${index + 10}'),
+                                            Text(
+                                              'Book ${index + 10}',
+                                              textAlign: TextAlign.center,
+                                            ),
                                             const SizedBox(height: 8),
                                             ElevatedButton(
                                               onPressed: () {
