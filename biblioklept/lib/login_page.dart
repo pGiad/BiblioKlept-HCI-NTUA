@@ -63,10 +63,12 @@ class _LoginFormState extends State<LoginForm> {
     print('Username: $username');
     print('Password: $password');
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainPage()),
-    );
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return const MainPage();
+    }), (r) {
+      return false;
+    });
   }
 
   void _updateCanLogin() {

@@ -20,11 +20,12 @@ class InfoRequestedTradePage extends StatelessWidget {
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
             ),
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
-              );
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return const MainPage();
+              }), (r) {
+                return false;
+              });
             },
           ),
           TextButton(
@@ -56,7 +57,6 @@ class InfoRequestedTradePage extends StatelessWidget {
               style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
             ),
             onPressed: () {
-              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
@@ -47,10 +48,10 @@ class _ScanQRPageState extends State<ScanQRPage> {
                 padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    int count = 0;
-                    Navigator.popUntil(context, (route) {
-                      return count++ == 3;
-                    });
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return const MainPage();
+                    }));
                   },
                   child: const Icon(
                     Icons.home,

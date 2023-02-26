@@ -1,26 +1,6 @@
-import 'package:flutter/material.dart';
-import 'dart:typed_data';
-import 'dart:ui';
-
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import "package:biblioklept/receivedrequests.dart";
-
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'BiblioKlept',
-      home: GeneratedQRCodePage(),
-    );
-  }
-}
 
 class GeneratedQRCodePage extends StatelessWidget {
   const GeneratedQRCodePage({Key? key}) : super(key: key);
@@ -70,11 +50,12 @@ class GeneratedQRCodePage extends StatelessWidget {
                 ),
                 onPressed: () {
                   saveQrCode(context, data);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ReceivedRequestsPage()),
-                  );
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return const MainPage();
+                  }), (r) {
+                    return false;
+                  });
                 },
               ),
             ],

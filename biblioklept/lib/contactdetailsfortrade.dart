@@ -1,3 +1,4 @@
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -44,9 +45,11 @@ class _ContactFormPageState extends State<ContactFormPage> {
 
     // Send Request logic missing
 
-    int count = 0;
-    Navigator.popUntil(context, (route) {
-      return count++ == 3;
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return const MainPage();
+    }), (r) {
+      return false;
     });
   }
 
@@ -157,6 +160,25 @@ class _ContactFormPageState extends State<ContactFormPage> {
                     fontSize: 32,
                     fontFamily: 'Langar-Regular'),
               ),
+              actions: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return const MainPage();
+                        }), (r) {
+                          return false;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.home,
+                        size: 26.0,
+                        color: Color.fromARGB(255, 112, 4, 80),
+                      ),
+                    ))
+              ],
             ),
             body: NotificationListener<OverscrollIndicatorNotification>(
                 onNotification: (overScroll) {

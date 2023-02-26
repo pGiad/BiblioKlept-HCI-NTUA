@@ -150,17 +150,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
         child: Scaffold(
             appBar: AppBar(
-              automaticallyImplyLeading: false,
               toolbarHeight: 70,
               elevation: 0,
               backgroundColor: Colors.transparent,
               bottomOpacity: 0,
+              centerTitle: true,
               title: const Text(
                 'Edit Profile',
                 style: TextStyle(
                     color: Color.fromARGB(255, 112, 4, 80),
                     fontSize: 32,
                     fontFamily: 'Langar-Regular'),
+              ),
+              leading: BackButton(
+                color: const Color.fromARGB(255, 112, 4, 80),
+                onPressed: () {
+                  int count = 0;
+                  Navigator.popUntil(context, (route) {
+                    return count++ == 2;
+                  });
+                },
               ),
             ),
             body: NotificationListener<OverscrollIndicatorNotification>(

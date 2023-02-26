@@ -98,10 +98,12 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
             )
           : FloatingActionButton.extended(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainPage()),
-                );
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return const MainPage();
+                }), (r) {
+                  return false;
+                });
               },
               label: const Text('Save'),
               icon: const Icon(Icons.save),

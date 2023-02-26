@@ -1,3 +1,4 @@
+import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
@@ -46,10 +47,10 @@ class _EditBookPageState extends State<EditBookPage> {
                     child: const Text('Cancel')),
                 TextButton(
                     onPressed: ((() {
-                      int count = 0;
-                      Navigator.popUntil(context, (route) {
-                        return count++ == 2;
-                      });
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return const MainPage();
+                      }));
                     })),
                     style: TextButton.styleFrom(
                         foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
