@@ -1,5 +1,6 @@
 import 'package:biblioklept/detailsofbooks.dart';
 import 'package:flutter/material.dart';
+import 'mainpage.dart';
 
 class BooksFoundPage extends StatelessWidget {
   const BooksFoundPage({super.key});
@@ -23,7 +24,12 @@ class BooksFoundPage extends StatelessWidget {
           leading: BackButton(
             color: const Color.fromARGB(255, 112, 4, 80),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return const MainPage();
+              }), (r) {
+                return false;
+              });
             },
           ),
         ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'mainpage.dart';
+import 'package:biblioklept/main.dart';
 
 class FavoriteGenresPage extends StatefulWidget {
-  const FavoriteGenresPage({Key? key}) : super(key: key);
+  late User user;
+  FavoriteGenresPage({Key? key, required this.user}) : super(key: key);
 
   @override
   _FavoriteGenresState createState() => _FavoriteGenresState();
@@ -29,6 +31,14 @@ class _FavoriteGenresState extends State<FavoriteGenresPage> {
     'Other'
   ];
   List<String> _selectedGenres = [];
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.user;
+  }
 
   // Create a method to handle changes to checkbox states
   void _onGenreSelected(bool selected, String genre) {

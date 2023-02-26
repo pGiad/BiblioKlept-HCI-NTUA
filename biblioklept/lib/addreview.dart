@@ -32,40 +32,45 @@ class WriteReviewPage extends StatelessWidget {
             ),
             automaticallyImplyLeading: false,
           ),
-          body: FocusScope(
-              node: _focusScopeNode,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 30),
-                      Text(
-                        'How was your experince with $username trading $bookTitle with you?',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
+          body: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overScroll) {
+                overScroll.disallowIndicator();
+                return true;
+              },
+              child: FocusScope(
+                  node: _focusScopeNode,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 30),
+                          Text(
+                            'How was your experince with $username trading $bookTitle with you?',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          TextFormField(
+                            maxLines: 7,
+                            decoration: InputDecoration(
+                              hintText: 'Write your review here...',
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 112, 4, 80))),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0)),
+                            ),
+                            cursorColor: Colors.black,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 20.0),
-                      TextFormField(
-                        maxLines: 7,
-                        decoration: InputDecoration(
-                          hintText: 'Write your review here...',
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 112, 4, 80))),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0)),
-                        ),
-                        cursorColor: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
-              )),
+                    ),
+                  ))),
           bottomNavigationBar: BottomAppBar(
             elevation: 0,
             color: Colors.transparent,
