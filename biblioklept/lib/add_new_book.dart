@@ -1,3 +1,4 @@
+import 'package:biblioklept/main.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
@@ -28,6 +29,10 @@ class AddNewBookPage extends StatefulWidget {
 enum Condition { brandNew, likeNew, used, old }
 
 class _AddNewBookPageState extends State<AddNewBookPage> {
+
+   late SQLiteService sqLiteService;
+  List<Book> _book = <Book>[];
+
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _publisherController = TextEditingController();
@@ -36,6 +41,17 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
   String? _categoryController;
   Condition? _conditionController;
   int? _yearofpurchaseController;
+final _repeatTitleController = TextEditingController();
+
+late Book _newBook = Book(
+      title: '',
+      author: '',
+      publisher: '',
+      summary: '',
+      numberofpages: 0,
+      category: '',
+      condition:'',
+      yearofpurchase: 0);
 
   bool _canAddBook = false;
 
@@ -73,7 +89,7 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
     // }
   }
 
-  void _addBook() {
+  Future<void> _addBook() async {
     final int? numPages = int.tryParse(_numberofpagesController.text);
     if (numPages == null || numPages <= 0) {
       showDialog(
@@ -114,7 +130,22 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
     print('Condition: $condition');
     print('Year of Purchase: $year');
 
-    int count = 0;
+//point
+    
+      _newBook = Book(
+          title: title,
+          author: author,
+          publisher: publisher,
+          summary: summary,
+          numberofpages: numPages,
+          category: category,
+          condition: enumToString(condition),
+          yearofpurchase: year);
+
+      final newID = await sqLiteService.addBook(_newBook);
+      _newBook.id = newID;
+      setState(() {});
+      
     Navigator.pop(context);
   }
 
@@ -134,6 +165,13 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
   @override
   void initState() {
     super.initState();
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final book = await sqLiteService.getBooks();
+      setState(() {
+        _book = book;
+      });
+    });
     _titleController.addListener(_updateCanAddBook);
     _authorController.addListener(_updateCanAddBook);
     _publisherController.addListener(_updateCanAddBook);

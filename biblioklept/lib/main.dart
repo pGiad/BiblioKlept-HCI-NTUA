@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -67,7 +69,54 @@ class User {
     return record;
   }
 }
+class Book {
+  int? id;
+  String? title;
+  String? author;
+  String? publisher;
+  String? summary;
+  int? numberofpages;
+  String? category;
+  String? condition;
+  int? yearofpurchase;
 
+  Book(
+      {this.id,
+      this.title,
+      this.author,
+      this.publisher,
+      this.summary,
+      this.numberofpages,
+      this.category,
+      this.condition,
+      this.yearofpurchase});
+
+  Book.fromMap(Map<String, dynamic> book)
+      : id = book['id'],
+        title = book['title'],
+        author = book['author'],
+        publisher = book['publisher'],
+        summary = book['summary'],
+        numberofpages = book['numberofpages'],
+        category = book['category'],
+        condition = book['condition'],
+        yearofpurchase = book['yearofpurchase'];
+
+  Map<String, dynamic> toMap() {
+    final record = {
+      'id': id,
+      'title': title,
+      'author': author,
+      'publisher': publisher,
+      'summary': summary,
+      'numberofpages': numberofpages,
+      'category': category,
+      'condition': condition,
+      'yearofpurchase': yearofpurchase
+    };
+    return record;
+  }
+}
 class SQLiteService {
   // DB initialization
   Future<Database> initDB() async {
@@ -86,6 +135,20 @@ class SQLiteService {
             age INTEGER,
             address TEXT,
             categories TEXT
+          )
+          ''');
+          // Create book table
+        await db.execute('''
+          CREATE TABLE book (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            author TEXT,
+            publisher TEXT,
+            summary TEXT,
+            numberofpages INTEGER,
+            category TEXT,
+            condition TEXT,
+            yearofpurchase INTEGER
           )
           ''');
       },
@@ -162,4 +225,58 @@ class SQLiteService {
 
   //   return queryResult.map((e) => Playlist.fromMap(e)).toList();
   // }
+
+
+/* ############### BOOK ###############
+  */
+
+
+// Retrieve all book from db
+  Future<List<Book>> getBooks() async {
+    // Connection with db
+    final db = await initDB();
+
+    final List<Map<String, Object?>> queryResult = await db.query('book');
+
+    // Convert from db records to class instances
+    return queryResult.map((e) => Book.fromMap(e)).toList();
+  }
+
+  /// Add [Book] [Book] to db. Returns the primary key of the record.
+  Future<int> addBook(Book book) async {
+    // Connection with db.
+    final db = await initDB();
+
+    // In case there is a duplicate record in the database for some reason, replace it with the current one.
+    return db.insert('book', book.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  /// Delete the [Book] with [id] from the  db
+  Future<void> deleteBook(final id) async {
+    // Connection with db
+    final db = await initDB();
+
+    await db.delete('book', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// Update [Book]
+  Future<void> updateBook(Book book) async {
+    // Connection with db
+    final db = await initDB();
+
+    await db.update(
+        'book',
+        where: 'id = ?',
+        book.toMap(),
+        whereArgs: [book.id],
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  /// Delete all [Book] records from db
+  Future<void> deleteAllBook() async {
+    // Connection with db
+    final db = await initDB();
+    await db.delete('book');
+  }
 }
