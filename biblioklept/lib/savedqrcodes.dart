@@ -48,7 +48,7 @@ class SavedQRCodesPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => QRCodeDetailsPage()),
+                            builder: (context) => const QRCodeDetailsPage()),
                       );
                     },
                     child: Padding(
