@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:biblioklept/main.dart';
 import 'signup_page.dart';
 import 'mainpage.dart';
 
@@ -11,7 +12,7 @@ class BiblioKlept extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'BiblioKlept',
       home: LoginPage(),
     );
@@ -19,7 +20,7 @@ class BiblioKlept extends StatelessWidget {
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,9 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  late SQLiteService sqLiteService;
+  List<User> _users = <User>[];
+
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -81,6 +85,13 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final users = await sqLiteService.getUsers();
+      setState(() {
+        _users = users;
+      });
+    });
     _usernameController.addListener(_updateCanLogin);
     _passwordController.addListener(_updateCanLogin);
   }

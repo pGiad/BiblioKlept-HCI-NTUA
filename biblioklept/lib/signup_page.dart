@@ -1,3 +1,4 @@
+import 'package:biblioklept/main.dart';
 import 'package:flutter/material.dart';
 import 'favorite_genres.dart';
 
@@ -11,6 +12,9 @@ class SignUpPage extends StatefulWidget {
 enum Gender { male, female, other }
 
 class _SignUpFormState extends State<SignUpPage> {
+  late SQLiteService sqLiteService;
+  List<User> _users = <User>[];
+
   final _fullnameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -19,6 +23,14 @@ class _SignUpFormState extends State<SignUpPage> {
   final _addressController = TextEditingController();
   final _passwordController = TextEditingController();
   final _repeatPasswordController = TextEditingController();
+
+  late User _newUser = User(
+      username: '',
+      fullname: '',
+      password: '',
+      email: '',
+      address: '',
+      gender: '');
 
   bool _canSignUp = false;
 
@@ -33,7 +45,7 @@ class _SignUpFormState extends State<SignUpPage> {
     super.dispose();
   }
 
-  void _signUp() {
+  Future<void> _signUp() async {
     String fullname = _fullnameController.text;
     String username = _usernameController.text;
     String email = _emailController.text;
@@ -43,27 +55,51 @@ class _SignUpFormState extends State<SignUpPage> {
     String password = _passwordController.text;
     String repeatedPassword = _repeatPasswordController.text;
 
-    if (password == repeatedPassword) {
-      print('Fullname: $fullname');
-      print('Username: $username');
-      print('Email: $email');
-      print('Age: $age');
-      print('Gender: $gender');
-      print('Address: $address');
-      print('Password: $password');
+    final matchedUser = _users.any((user) => user.username == username);
 
-      // Sign Up logic missing
+    if (password == repeatedPassword && !matchedUser) {
+      _newUser = User(
+          username: username,
+          fullname: fullname,
+          password: password,
+          email: email,
+          address: address,
+          gender: enumToString(gender),
+          age: age);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const FavoriteGenresPage()),
-      );
-    } else {
+      final newID = await sqLiteService.addUser(_newUser);
+      _newUser.id = newID;
+      setState(() {});
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FavoriteGenresPage(user: _newUser)), (r) {
+        return false;
+      });
+    } else if (password != repeatedPassword) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Passwords do not match"),
           content: const Text("Please make sure the passwords match."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "OK",
+                style: TextStyle(color: Color.fromARGB(255, 112, 4, 80)),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Username exists"),
+          content: const Text("Please pick another username."),
           actions: <Widget>[
             TextButton(
               child: const Text(
@@ -94,8 +130,15 @@ class _SignUpFormState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    _fullnameController.addListener(_updateCanSignUp);
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final users = await sqLiteService.getUsers();
+      setState(() {
+        _users = users;
+      });
+    });
     _usernameController.addListener(_updateCanSignUp);
+    _fullnameController.addListener(_updateCanSignUp);
     _emailController.addListener(_updateCanSignUp);
     _addressController.addListener(_updateCanSignUp);
     _passwordController.addListener(_updateCanSignUp);
