@@ -12,7 +12,9 @@ class BookDetailsPage extends StatefulWidget {
 }
 
 class _BookDetailsState extends State<BookDetailsPage> {
+  late SQLiteService sqLiteService;
   late User currentUser;
+  late User? _owner = new User();
   late Book currentBook;
 
   @override
@@ -20,6 +22,13 @@ class _BookDetailsState extends State<BookDetailsPage> {
     super.initState();
     currentUser = widget.user;
     currentBook = widget.book;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final owner = await sqLiteService.getUserById(widget.book.userID!);
+      setState(() {
+        _owner = owner;
+      });
+    });
   }
 
   @override
@@ -35,7 +44,7 @@ class _BookDetailsState extends State<BookDetailsPage> {
           ),
           centerTitle: true,
           title: Text(
-            "${currentBook.title}\nfrom ${currentUser.username}",
+            "${currentBook.title}\nfrom ${_owner?.username}",
             style: const TextStyle(
                 color: Color.fromARGB(255, 112, 4, 80),
                 fontSize: 32,
@@ -180,7 +189,7 @@ class _BookDetailsState extends State<BookDetailsPage> {
                                       text: 'Owner\'s Address: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: currentUser.address)
+                                  TextSpan(text: _owner?.address)
                                 ],
                               ),
                             ),
@@ -194,7 +203,7 @@ class _BookDetailsState extends State<BookDetailsPage> {
                                       text: 'Owner\'s email: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: currentUser.email)
+                                  TextSpan(text: _owner?.email)
                                 ],
                               ),
                             ),
