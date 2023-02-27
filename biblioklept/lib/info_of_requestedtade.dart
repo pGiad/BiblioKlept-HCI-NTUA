@@ -3,15 +3,21 @@ import 'package:biblioklept/mainpage.dart';
 import 'package:biblioklept/qrcodecreation.dart';
 import 'package:flutter/material.dart';
 
-class InfoRequestedTradePage extends StatelessWidget {
-  InfoRequestedTradePage({super.key});
+class InfoRequestedTradePage extends StatefulWidget {
+  late User user;
+  InfoRequestedTradePage({Key? key, required this.user}) : super(key: key);
 
+  @override
+  _InfoRequestedTradeState createState() => _InfoRequestedTradeState();
+}
+
+class _InfoRequestedTradeState extends State<InfoRequestedTradePage> {
   late User currentUser;
 
   @override
   void initState() {
-    // super.initState();
-    // currentUser = widget.user;
+    super.initState();
+    currentUser = widget.user;
   }
 
   void _deleteReceivedRequest(context) {
@@ -70,7 +76,9 @@ class InfoRequestedTradePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => GeneratedQRCodePage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        GeneratedQRCodePage(user: currentUser)),
               );
             },
           ),

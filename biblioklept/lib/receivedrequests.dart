@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
 import "package:biblioklept/info_of_requestedtade.dart";
+import 'main.dart';
 
-class ReceivedRequestsPage extends StatelessWidget {
-  ReceivedRequestsPage({super.key});
+class ReceivedRequestsPage extends StatefulWidget {
+  late User user;
+  ReceivedRequestsPage({Key? key, required this.user}) : super(key: key);
+
+  @override
+  _ReceivedRequestsState createState() => _ReceivedRequestsState();
+}
+
+class _ReceivedRequestsState extends State<ReceivedRequestsPage> {
+
+  late User currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +83,7 @@ class ReceivedRequestsPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => InfoRequestedTradePage()),
+                                builder: (context) => InfoRequestedTradePage(user: currentUser,)),
                           );
                         },
                         child: Padding(

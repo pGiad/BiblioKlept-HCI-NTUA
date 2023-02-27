@@ -64,7 +64,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           email: email,
           address: address,
           gender: enumToString(gender),
-          age: age);
+          age: age,
+          categories: widget.user.categories);
 
       await sqLiteService.updateUser(currentUser);
 

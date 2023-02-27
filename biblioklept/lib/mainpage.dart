@@ -206,7 +206,9 @@ class _MainPageState extends State<MainPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ReceivedRequestsPage()),
+                                                ReceivedRequestsPage(
+                                                  user: currentUser,
+                                                )),
                                       );
                                     },
                                     child: const ListTile(

@@ -65,7 +65,8 @@ class _LoginFormState extends State<LoginForm> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Invalid Credentials"),
-          content: const Text("Your username or password is incorrect."),
+          content: const Text(
+              "Your username or password is incorrect. You can try testing credentials username: pgiad, password: 1, or create a new account."),
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(

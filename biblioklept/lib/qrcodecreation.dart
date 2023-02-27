@@ -3,15 +3,21 @@ import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class GeneratedQRCodePage extends StatelessWidget {
-  GeneratedQRCodePage({Key? key}) : super(key: key);
+class GeneratedQRCodePage extends StatefulWidget {
+  late User user;
+  GeneratedQRCodePage({Key? key, required this.user}) : super(key: key);
 
+  @override
+  _GeneratedQRCodeState createState() => _GeneratedQRCodeState();
+}
+
+class _GeneratedQRCodeState extends State<GeneratedQRCodePage> {
   late User currentUser;
 
   @override
   void initState() {
-    // super.initState();
-    // currentUser = widget.user;
+    super.initState();
+    currentUser = widget.user;
   }
 
   @override
