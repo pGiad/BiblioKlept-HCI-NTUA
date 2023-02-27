@@ -5,7 +5,9 @@ import 'mainpage.dart';
 
 class BooksFoundPage extends StatefulWidget {
   late User user;
-  BooksFoundPage({Key? key, required this.user}) : super(key: key);
+  late List<String> category;
+  BooksFoundPage({Key? key, required this.user, required this.category})
+      : super(key: key);
 
   @override
   _BooksFoundState createState() => _BooksFoundState();
@@ -23,7 +25,8 @@ class _BooksFoundState extends State<BooksFoundPage> {
     currentUser = widget.user;
     sqLiteService = SQLiteService();
     sqLiteService.initDB().whenComplete(() async {
-      final books = await sqLiteService.getBooksNotOwnedByUser(currentUser.id!);
+      final books = await sqLiteService.getBooksByCategories(
+          widget.category, currentUser.id!);
       setState(() {
         _books = books;
       });
@@ -65,50 +68,60 @@ class _BooksFoundState extends State<BooksFoundPage> {
             overScroll.disallowIndicator();
             return true;
           },
-          child: ListView.separated(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              separatorBuilder: (BuildContext context, int index) => Divider(),
-              itemCount: _books.length,
-              itemBuilder: (BuildContext context, int index) {
-                final book = _books[index];
-                return FutureBuilder<User?>(
-                    future: sqLiteService.getUserById(book.userID!),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<User?> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
-                      final user = snapshot.data;
-                      final username = user?.username ?? 'Unknown';
-                      return ListTile(
-                          title: Text(book.title!),
-                          subtitle: Text(username),
-                          trailing: SizedBox(
-                            width: 100,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BookDetailsPage(
-                                            user: currentUser,
-                                            book: book,
-                                          )),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 112, 4, 80),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  fixedSize: const Size(200, 40)),
-                              child: const Icon(Icons.book),
-                            ),
-                          ));
-                    });
-              }),
+          child: _books.isEmpty
+              ? const Center(
+                  child: Text(
+                  'No Books Found 😓',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 112, 4, 80), fontSize: 20),
+                ))
+              : ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(),
+                  itemCount: _books.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final book = _books[index];
+                    return FutureBuilder<User?>(
+                        future: sqLiteService.getUserById(book.userID!),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<User?> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          final user = snapshot.data;
+                          final username = user?.username ?? 'Unknown';
+                          return ListTile(
+                              title: Text(book.title!),
+                              subtitle: Text(username),
+                              trailing: SizedBox(
+                                width: 100,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BookDetailsPage(
+                                                user: currentUser,
+                                                book: book,
+                                              )),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          const Color.fromARGB(255, 112, 4, 80),
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      fixedSize: const Size(200, 40)),
+                                  child: const Icon(Icons.book),
+                                ),
+                              ));
+                        });
+                  }),
         ));
   }
 }

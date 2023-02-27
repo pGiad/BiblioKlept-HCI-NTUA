@@ -134,6 +134,9 @@ class _MainPageState extends State<MainPage> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   BooksFoundPage(
+                                                                    category: [
+                                                                      category
+                                                                    ],
                                                                     user:
                                                                         currentUser,
                                                                   )),
@@ -287,6 +290,7 @@ class _MainPageState extends State<MainPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => BooksFoundPage(
+                                          category: bookCategories,
                                           user: currentUser,
                                         )),
                               );
