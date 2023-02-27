@@ -1,56 +1,26 @@
 import 'package:biblioklept/selectbookfortrade.dart';
 import 'package:flutter/material.dart';
+import 'main.dart';
 
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
+class BookDetailsPage extends StatefulWidget {
+  late User user;
+  late Book book;
+  BookDetailsPage({Key? key, required this.user, required this.book});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BiblioKlept',
-      home: BookDetailsPage(
-          title: 'Davinci Code',
-          username: "johnli7",
-          author: "",
-          publisher: "",
-          summary: "",
-          pages: hashCode,
-          category: "",
-          condition: "",
-          year: hashCode,
-          address: "",
-          email: ""),
-    );
-  }
+  _BookDetailsState createState() => _BookDetailsState();
 }
 
-class BookDetailsPage extends StatelessWidget {
-  final String title;
-  final String username;
-  final String author;
-  final String publisher;
-  final String summary;
-  final int pages;
-  final String category;
-  final String condition;
-  final int year;
-  final String address;
-  final String email;
+class _BookDetailsState extends State<BookDetailsPage> {
+  late User currentUser;
+  late Book currentBook;
 
-  const BookDetailsPage({
-    super.key,
-    required this.title,
-    required this.username,
-    required this.author,
-    required this.publisher,
-    required this.summary,
-    required this.pages,
-    required this.category,
-    required this.condition,
-    required this.year,
-    required this.address,
-    required this.email,
-  });
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.user;
+    currentBook = widget.book;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +35,7 @@ class BookDetailsPage extends StatelessWidget {
           ),
           centerTitle: true,
           title: Text(
-            "$title\nfrom $username",
+            "${currentBook.title}\nfrom ${currentUser.username}",
             style: const TextStyle(
                 color: Color.fromARGB(255, 112, 4, 80),
                 fontSize: 32,
@@ -90,7 +60,7 @@ class BookDetailsPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Title: $title',
+                              'Title: ${currentBook.title}',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -107,7 +77,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Author: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: author)
+                                  TextSpan(text: currentBook.author)
                                 ],
                               ),
                             ),
@@ -121,7 +91,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Publisher: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: publisher)
+                                  TextSpan(text: currentBook.publisher)
                                 ],
                               ),
                             ),
@@ -135,7 +105,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Summary: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: summary)
+                                  TextSpan(text: currentBook.summary)
                                 ],
                               ),
                               textAlign: TextAlign.justify,
@@ -150,7 +120,9 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Number of Pages: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: pages.toString())
+                                  TextSpan(
+                                      text:
+                                          currentBook.numberofpages.toString())
                                 ],
                               ),
                             ),
@@ -164,7 +136,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Category: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: category)
+                                  TextSpan(text: currentBook.category)
                                 ],
                               ),
                             ),
@@ -178,7 +150,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Condition: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: condition)
+                                  TextSpan(text: currentBook.condition)
                                 ],
                               ),
                             ),
@@ -192,7 +164,9 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Year of Purchase: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: year.toString())
+                                  TextSpan(
+                                      text:
+                                          currentBook.yearofpurchase.toString())
                                 ],
                               ),
                             ),
@@ -206,7 +180,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Owner\'s Address: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: address)
+                                  TextSpan(text: currentUser.address)
                                 ],
                               ),
                             ),
@@ -220,7 +194,7 @@ class BookDetailsPage extends StatelessWidget {
                                       text: 'Owner\'s email: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
-                                  TextSpan(text: email)
+                                  TextSpan(text: currentUser.email)
                                 ],
                               ),
                             ),
@@ -238,7 +212,7 @@ class BookDetailsPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const SelectBookforTrade()),
+                                      SelectBookforTrade(user: currentUser)),
                             );
                           },
                           style: ElevatedButton.styleFrom(

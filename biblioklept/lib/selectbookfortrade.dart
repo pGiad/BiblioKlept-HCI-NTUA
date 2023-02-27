@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import "package:biblioklept/contactdetailsfortrade.dart";
+import 'main.dart';
 
 class SelectBookforTrade extends StatefulWidget {
-  const SelectBookforTrade({super.key});
+  late User user;
+  SelectBookforTrade({super.key, required this.user});
 
   @override
   _SelectBookforTradeState createState() => _SelectBookforTradeState();
 }
 
 class _SelectBookforTradeState extends State<SelectBookforTrade> {
-  final List<String> _bookOptions = [
-    'Option 1',
-    'Option 2',
-    'Option 3',
-    'Option 4',
-    'Option 5',
-    'Option 6',
-    'Option 7',
-    'Option 8',
-    'Option 9',
-    'Option 10',
-    'Option 11',
-    'Option 12',
-    'Option 13',
-    'Option 14',
-    'Option 15',
-  ];
-  final List<bool> _isSelected = List.generate(15, (index) => false);
+  late SQLiteService sqLiteService;
+
+  late User currentUser;
+  late List<Book> _books = <Book>[];
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.user;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final books = await sqLiteService.getBooksForUser(currentUser.id);
+      setState(() {
+        _books = books;
+      });
+    });
+  }
 
   int _selectedIndex = -1;
 
@@ -81,8 +82,9 @@ class _SelectBookforTradeState extends State<SelectBookforTrade> {
                       endIndent: 16,
                     );
                   },
-                  itemCount: _bookOptions.length,
+                  itemCount: _books.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final book = _books[index];
                     return GestureDetector(
                       onTap: () {
                         setState(() {
@@ -96,7 +98,7 @@ class _SelectBookforTradeState extends State<SelectBookforTrade> {
                           children: [
                             Expanded(
                               child: Text(
-                                _bookOptions[index],
+                                '${book.title} by ${book.author}',
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
@@ -134,7 +136,7 @@ class _SelectBookforTradeState extends State<SelectBookforTrade> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ContactFormPage(),
+                                builder: (context) => ContactFormPage(user: currentUser,),
                               ),
                             );
                           }

@@ -3,15 +3,31 @@ import 'package:biblioklept/main.dart';
 import 'package:flutter/material.dart';
 import 'mainpage.dart';
 
-class BooksFoundPage extends StatelessWidget {
-  BooksFoundPage({super.key});
+class BooksFoundPage extends StatefulWidget {
+  late User user;
+  BooksFoundPage({Key? key, required this.user}) : super(key: key);
+
+  @override
+  _BooksFoundState createState() => _BooksFoundState();
+}
+
+class _BooksFoundState extends State<BooksFoundPage> {
+  late SQLiteService sqLiteService;
 
   late User currentUser;
+  late List<Book> _books = <Book>[];
 
   @override
   void initState() {
-    // super.initState();
-    // currentUser = widget.user;
+    super.initState();
+    currentUser = widget.user;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final books = await sqLiteService.getBooksNotOwnedByUser(currentUser.id!);
+      setState(() {
+        _books = books;
+      });
+    });
   }
 
   @override
@@ -50,47 +66,49 @@ class BooksFoundPage extends StatelessWidget {
             return true;
           },
           child: ListView.separated(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            separatorBuilder: (BuildContext context, int index) => Divider(),
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                  title: Text('Title of Book $index'),
-                  subtitle: Text('Username of Owner $index'),
-                  trailing: SizedBox(
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BookDetailsPage(
-                                  title: 'Harry Potter',
-                                  username: "pgiad",
-                                  author: "JK Rowling",
-                                  publisher: "Symmetria",
-                                  summary: "...",
-                                  pages: 565,
-                                  category: "Fantasy",
-                                  condition: "Good",
-                                  year: 2022,
-                                  address: "Athens",
-                                  email: "pgiad@gmail.com")),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 112, 4, 80),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          fixedSize: const Size(200, 40)),
-                      child: const Icon(Icons.book),
-                    ),
-                  ));
-            },
-          ),
+              padding: const EdgeInsets.only(bottom: 16.0),
+              separatorBuilder: (BuildContext context, int index) => Divider(),
+              itemCount: _books.length,
+              itemBuilder: (BuildContext context, int index) {
+                final book = _books[index];
+                return FutureBuilder<User?>(
+                    future: sqLiteService.getUserById(book.userID!),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<User?> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+                      final user = snapshot.data;
+                      final username = user?.username ?? 'Unknown';
+                      return ListTile(
+                          title: Text(book.title!),
+                          subtitle: Text(username),
+                          trailing: SizedBox(
+                            width: 100,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BookDetailsPage(
+                                            user: currentUser,
+                                            book: book,
+                                          )),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 112, 4, 80),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  fixedSize: const Size(200, 40)),
+                              child: const Icon(Icons.book),
+                            ),
+                          ));
+                    });
+              }),
         ));
   }
 }

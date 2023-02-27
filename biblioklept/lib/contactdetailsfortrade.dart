@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ContactFormPage extends StatefulWidget {
-  const ContactFormPage({super.key});
+  late User user;
+  ContactFormPage({super.key, required this.user});
 
   @override
   _ContactFormPageState createState() => _ContactFormPageState();
@@ -70,7 +71,7 @@ class _ContactFormPageState extends State<ContactFormPage> {
   @override
   void initState() {
     super.initState();
-    // currentUser = widget.user;
+    currentUser = widget.user;
     _fullnameController.addListener(_updateCanSendRequest);
     _emailController.addListener(_updateCanSendRequest);
     _phoneNumberController.addListener(_updateCanSendRequest);

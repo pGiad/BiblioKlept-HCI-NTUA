@@ -1,8 +1,8 @@
 import 'package:biblioklept/main.dart';
-import 'package:biblioklept/mybooks.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
+import 'mainpage.dart';
 
 class AddNewBookPage extends StatefulWidget {
   late User user;
@@ -99,12 +99,14 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
     _newBook.id = newID;
     setState(() {});
 
-    Navigator.pushReplacement(context,
+    Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return MyBooksPage(
+      return MainPage(
         user: currentUser,
       );
-    }));
+    }), (r) {
+      return false;
+    });
   }
 
   void _updateCanAddBook() {

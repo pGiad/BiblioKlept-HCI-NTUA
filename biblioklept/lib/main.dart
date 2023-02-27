@@ -177,6 +177,27 @@ class SQLiteService {
     return queryResult.map((e) => User.fromMap(e)).toList();
   }
 
+  Future<User?> getUserById(int id) async {
+    final db = await initDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      'users',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.isEmpty) {
+      return null;
+    }
+    return User.fromMap(maps.first);
+  }
+
+  Future<List<String>> getUserCategories(int userId) async {
+    final db = await initDB();
+    final results = await db
+        .rawQuery('SELECT categories FROM users WHERE id = ?', [userId]);
+    final categories = results.first['categories'] as String;
+    return categories.split(',');
+  }
+
   /// Add [User] [user] to db. Returns the primary key of the record.
   Future<int> addUser(User user) async {
     // Connection with db.
@@ -215,23 +236,6 @@ class SQLiteService {
     await db.delete('users');
   }
 
-  /*
-  ############### EXTRAS ###############
-  */
-
-  // returns a list of user's playlists
-  // Future<List<Playlist>> getUserPlaylists(User user) async {
-  //   final db = await initDB();
-
-  //   final List<Map<String, Object?>> queryResult = await db.query(
-  //     'playlists',
-  //     where: 'userID = ?',
-  //     whereArgs: [user.id],
-  //   );
-
-  //   return queryResult.map((e) => Playlist.fromMap(e)).toList();
-  // }
-
 /* 
 ############### BOOK ###############
 */
@@ -257,6 +261,34 @@ class SQLiteService {
     return List.generate(maps.length, (i) {
       return Book.fromMap(maps[i]);
     });
+  }
+
+  Future<List<Book>> getBooksNotOwnedByUser(int userID) async {
+    final db = await initDB();
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'book',
+      where: 'userID != ?',
+      whereArgs: [userID],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Book.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<Book>> getBooksByCategories(
+      List<String> categories, int userID) async {
+    final db = await initDB();
+
+    final result = await db.query(
+      'book',
+      where:
+          'category IN (${categories.map((c) => '?').join(',')}) AND userID != ?',
+      whereArgs: [...categories, userID],
+    );
+
+    return result.map((json) => Book.fromMap(json)).toList();
   }
 
   /// Add [Book] [Book] to db. Returns the primary key of the record.

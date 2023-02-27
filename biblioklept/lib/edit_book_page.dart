@@ -3,7 +3,6 @@ import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
-import 'mybooks.dart';
 
 class EditBookPage extends StatefulWidget {
   late Book book;
@@ -60,12 +59,14 @@ class _EditBookPageState extends State<EditBookPage> {
                     onPressed: ((() async {
                       await sqLiteService.deleteBook(currentBook.id);
                       setState(() {});
-                      Navigator.pushReplacement(context,
+                      Navigator.pushAndRemoveUntil(context,
                           MaterialPageRoute(builder: (BuildContext context) {
                         return MainPage(
                           user: currentUser,
                         );
-                      }));
+                      }), (r) {
+                        return false;
+                      });
                     })),
                     style: TextButton.styleFrom(
                         foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
@@ -120,12 +121,14 @@ class _EditBookPageState extends State<EditBookPage> {
 
     await sqLiteService.updateBook(currentBook);
 
-    Navigator.pushReplacement(context,
+    Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return MyBooksPage(
+      return MainPage(
         user: currentUser,
       );
-    }));
+    }), (r) {
+      return false;
+    });
   }
 
   void _updateCanSaveChanges() {

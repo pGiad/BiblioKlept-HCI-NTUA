@@ -17,6 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late SQLiteService sqLiteService;
   final _focusScopeNode = FocusScopeNode();
 
   final List<String> bookCategories = [
@@ -35,16 +36,31 @@ class _MainPageState extends State<MainPage> {
   ];
 
   late User currentUser;
+  late List<Book> _suggestedBooks = <Book>[];
+  late List<Book> _books = <Book>[];
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.user;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final categories = await sqLiteService.getUserCategories(currentUser.id!);
+      final suggestedBooks =
+          await sqLiteService.getBooksByCategories(categories, currentUser.id!);
+
+      final books = await sqLiteService.getBooksNotOwnedByUser(currentUser.id!);
+
+      setState(() {
+        _suggestedBooks = suggestedBooks;
+        _books = books;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    String searchQuery = " ";
+    String searchQuery = "";
     return GestureDetector(
         onTap: () {
           _focusScopeNode.unfocus();
@@ -117,7 +133,10 @@ class _MainPageState extends State<MainPage> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  BooksFoundPage()),
+                                                                  BooksFoundPage(
+                                                                    user:
+                                                                        currentUser,
+                                                                  )),
                                                         );
                                                       },
                                                       child: ListTile(
@@ -162,7 +181,9 @@ class _MainPageState extends State<MainPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const BooksNearYouPage()),
+                                                BooksNearYouPage(
+                                                  user: currentUser,
+                                                )),
                                       );
                                     },
                                     child: const ListTile(
@@ -265,7 +286,9 @@ class _MainPageState extends State<MainPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BooksFoundPage()),
+                                    builder: (context) => BooksFoundPage(
+                                          user: currentUser,
+                                        )),
                               );
                             }
                           },
@@ -310,7 +333,9 @@ class _MainPageState extends State<MainPage> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: List.generate(10, (index) {
+                                  children: List.generate(
+                                      _suggestedBooks.length, (index) {
+                                    Book book = _suggestedBooks[index];
                                     return Padding(
                                       padding: const EdgeInsets.all(8),
                                       child: Container(
@@ -326,7 +351,7 @@ class _MainPageState extends State<MainPage> {
                                           children: [
                                             const Icon(Icons.book, size: 50),
                                             Text(
-                                              'Book ${index + 10}',
+                                              book.title ?? '',
                                               textAlign: TextAlign.center,
                                             ),
                                             const SizedBox(height: 8),
@@ -336,23 +361,10 @@ class _MainPageState extends State<MainPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const BookDetailsPage(
-                                                            title:
-                                                                'Harry Potter',
-                                                            username: "pgiad",
-                                                            author:
-                                                                "JK Rowling",
-                                                            publisher:
-                                                                "Symmetria",
-                                                            summary:
-                                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis nulla sed nisl eleifend vestibulum. Nulla facilisi. Morbi vel sapien pharetra, feugiat nibh ut, bibendum orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse nec odio at sem efficitur convallis. Nullam sodales metus vel augue vulputate, in semper velit suscipit. Donec venenatis tortor id felis elementum lobortis. Nam eget sem vitae risus lacinia facilisis. Aliquam ullamcorper dictum elit at pretium. Sed viverra libero et sapien euismod dapibusPellentesque auctor nibh ut enim tincidunt tristique. Donec ullamcorper ipsum vel magna auctor efficitur. Integer euismod ultricies est, in convallis neque hendrerit ac. Praesent efficitur convallis libero, vitae venenatis eros hendrerit nec. Proin rutrum aliquet dolor a vestibulum. Aliquam id tortor id ante sollicitudin interdum non et velit. Nunc congue eleifend ex, at scelerisque mi gravida vel. Phasellus eget enim sit amet dolor dictum scelerisque. Vivamus ullamcorper libero at elit bibendum, in blandit sapien consequat. Vivamus vel ante nisl. Sed eleifend quam sit amet libero luctus, ut tristique ex efficitur. Curabitur quis mollis purus, nec gravida nunc. Suspendisse potenti. Sed volutpat, quam at imperdiet dignissim, purus ante tempor ante, ut consectetur velit tortor vitae leo.Fusce volutpat, enim nec elementum rutrum",
-                                                            pages: 565,
-                                                            category: "Fantasy",
-                                                            condition: "Good",
-                                                            year: 2022,
-                                                            address: "Athens",
-                                                            email:
-                                                                "pgiad@gmail.com"),
+                                                        BookDetailsPage(
+                                                      user: currentUser,
+                                                      book: book,
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -406,7 +418,9 @@ class _MainPageState extends State<MainPage> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: List.generate(10, (index) {
+                                  children:
+                                      List.generate(_books.length, (index) {
+                                    Book book = _books[index];
                                     return Padding(
                                       padding: const EdgeInsets.all(8),
                                       child: Container(
@@ -422,7 +436,7 @@ class _MainPageState extends State<MainPage> {
                                           children: [
                                             const Icon(Icons.book, size: 50),
                                             Text(
-                                              'Book ${index + 10}',
+                                              book.title ?? '',
                                               textAlign: TextAlign.center,
                                             ),
                                             const SizedBox(height: 8),
@@ -432,22 +446,10 @@ class _MainPageState extends State<MainPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const BookDetailsPage(
-                                                            title:
-                                                                'Harry Potter',
-                                                            username: "pgiad",
-                                                            author:
-                                                                "JK Rowling",
-                                                            publisher:
-                                                                "Symmetria",
-                                                            summary: "...",
-                                                            pages: 565,
-                                                            category: "Fantasy",
-                                                            condition: "Good",
-                                                            year: 2022,
-                                                            address: "Athens",
-                                                            email:
-                                                                "pgiad@gmail.com"),
+                                                        BookDetailsPage(
+                                                      user: currentUser,
+                                                      book: book,
+                                                    ),
                                                   ),
                                                 );
                                               },
