@@ -1,26 +1,12 @@
 import 'package:biblioklept/main.dart';
+import 'package:biblioklept/mybooks.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
 
-void main() {
-  runApp(const BiblioKlept());
-}
-
-class BiblioKlept extends StatelessWidget {
-  const BiblioKlept({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'BiblioKlept',
-      home: AddNewBookPage(),
-    );
-  }
-}
-
 class AddNewBookPage extends StatefulWidget {
-  const AddNewBookPage({Key? key}) : super(key: key);
+  late User user;
+  AddNewBookPage({Key? key, required this.user}) : super(key: key);
 
   @override
   _AddNewBookPageState createState() => _AddNewBookPageState();
@@ -29,8 +15,7 @@ class AddNewBookPage extends StatefulWidget {
 enum Condition { brandNew, likeNew, used, old }
 
 class _AddNewBookPageState extends State<AddNewBookPage> {
-
-   late SQLiteService sqLiteService;
+  late SQLiteService sqLiteService;
   List<Book> _book = <Book>[];
 
   final _titleController = TextEditingController();
@@ -41,17 +26,19 @@ class _AddNewBookPageState extends State<AddNewBookPage> {
   String? _categoryController;
   Condition? _conditionController;
   int? _yearofpurchaseController;
-final _repeatTitleController = TextEditingController();
 
-late Book _newBook = Book(
+  late User currentUser;
+
+  late Book _newBook = Book(
       title: '',
       author: '',
       publisher: '',
       summary: '',
       numberofpages: 0,
       category: '',
-      condition:'',
-      yearofpurchase: 0);
+      condition: '',
+      yearofpurchase: 0,
+      userID: 0);
 
   bool _canAddBook = false;
 
@@ -63,30 +50,6 @@ late Book _newBook = Book(
     _summaryController.dispose();
     _numberofpagesController.dispose();
     super.dispose();
-  }
-
-  void _deleteBook() async {
-    bool? delBook = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              content: const Text('Are you sure you want to delete this book?'),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: ((() => Navigator.pop(context, false))),
-                    style: TextButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
-                    child: const Text('Cancel')),
-                TextButton(
-                    onPressed: ((() => Navigator.pop(context, true))),
-                    style: TextButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
-                    child: const Text('Yes')),
-              ],
-            ));
-    // if (delBook!) {
-    // _books.removeAt(idx);
-    // setState(() {});
-    // }
   }
 
   Future<void> _addBook() async {
@@ -121,32 +84,27 @@ late Book _newBook = Book(
     Condition condition = _conditionController!;
     int year = _yearofpurchaseController!;
 
-    print('Title: $title');
-    print('Author: $author');
-    print('Publisher: $publisher');
-    print('Summary: $summary');
-    print('No. of Pages: $numPages');
-    print('Category: $category');
-    print('Condition: $condition');
-    print('Year of Purchase: $year');
+    _newBook = Book(
+        title: title,
+        author: author,
+        publisher: publisher,
+        summary: summary,
+        numberofpages: numPages,
+        category: category,
+        condition: enumToString(condition),
+        yearofpurchase: year,
+        userID: currentUser.id);
 
-//point
-    
-      _newBook = Book(
-          title: title,
-          author: author,
-          publisher: publisher,
-          summary: summary,
-          numberofpages: numPages,
-          category: category,
-          condition: enumToString(condition),
-          yearofpurchase: year);
+    final newID = await sqLiteService.addBook(_newBook);
+    _newBook.id = newID;
+    setState(() {});
 
-      final newID = await sqLiteService.addBook(_newBook);
-      _newBook.id = newID;
-      setState(() {});
-      
-    Navigator.pop(context);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return MyBooksPage(
+        user: currentUser,
+      );
+    }));
   }
 
   void _updateCanAddBook() {
@@ -165,6 +123,7 @@ late Book _newBook = Book(
   @override
   void initState() {
     super.initState();
+    currentUser = widget.user;
     sqLiteService = SQLiteService();
     sqLiteService.initDB().whenComplete(() async {
       final book = await sqLiteService.getBooks();
@@ -399,7 +358,7 @@ late Book _newBook = Book(
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: SizedBox(
-                              width: 300, // set the width to 300 pixels
+                              width: 300,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

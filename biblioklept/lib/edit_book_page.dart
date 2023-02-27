@@ -3,9 +3,13 @@ import 'package:biblioklept/mainpage.dart';
 import 'package:flutter/material.dart';
 import "package:biblioklept/camera.dart";
 import 'package:camera/camera.dart';
+import 'mybooks.dart';
 
 class EditBookPage extends StatefulWidget {
-  const EditBookPage({Key? key}) : super(key: key);
+  late Book book;
+  late User user;
+  EditBookPage({Key? key, required this.book, required this.user})
+      : super(key: key);
 
   @override
   _EditBookPageState createState() => _EditBookPageState();
@@ -14,6 +18,8 @@ class EditBookPage extends StatefulWidget {
 enum Condition { brandNew, likeNew, used, old }
 
 class _EditBookPageState extends State<EditBookPage> {
+  late SQLiteService sqLiteService;
+
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _publisherController = TextEditingController();
@@ -24,6 +30,8 @@ class _EditBookPageState extends State<EditBookPage> {
   int? _yearofpurchaseController;
 
   late User currentUser;
+  late Book currentBook;
+  List<Book> _books = <Book>[];
 
   bool _canSaveChanges = false;
 
@@ -38,7 +46,7 @@ class _EditBookPageState extends State<EditBookPage> {
   }
 
   void _deleteBook() async {
-    bool? delBook = await showDialog<bool>(
+    await showDialog<bool>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
               content: const Text('Are you sure you want to delete this book?'),
@@ -49,7 +57,9 @@ class _EditBookPageState extends State<EditBookPage> {
                         foregroundColor: const Color.fromARGB(255, 112, 4, 80)),
                     child: const Text('Cancel')),
                 TextButton(
-                    onPressed: ((() {
+                    onPressed: ((() async {
+                      await sqLiteService.deleteBook(currentBook.id);
+                      setState(() {});
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (BuildContext context) {
                         return MainPage(
@@ -62,13 +72,9 @@ class _EditBookPageState extends State<EditBookPage> {
                     child: const Text('Yes')),
               ],
             ));
-    // if (delBook!) {
-    // _books.removeAt(idx);
-    // setState(() {});
-    // }
   }
 
-  void _saveChanges() {
+  Future<void> _saveChanges() async {
     final int? numPages = int.tryParse(_numberofpagesController.text);
     if (numPages == null || numPages <= 0) {
       showDialog(
@@ -100,17 +106,26 @@ class _EditBookPageState extends State<EditBookPage> {
     Condition condition = _conditionController!;
     int year = _yearofpurchaseController!;
 
-    print('Title: $title');
-    print('Author: $author');
-    print('Publisher: $publisher');
-    print('Summary: $summary');
-    print('No. of Pages: $numPages');
-    print('Category: $category');
-    print('Condition: $condition');
-    print('Year of Purchase: $year');
+    currentBook = Book(
+        id: widget.book.id,
+        title: title,
+        author: author,
+        publisher: publisher,
+        summary: summary,
+        numberofpages: numPages,
+        category: category,
+        condition: enumToString(condition),
+        yearofpurchase: year,
+        userID: currentUser.id);
 
-    int count = 0;
-    Navigator.pop(context);
+    await sqLiteService.updateBook(currentBook);
+
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return MyBooksPage(
+        user: currentUser,
+      );
+    }));
   }
 
   void _updateCanSaveChanges() {
@@ -129,7 +144,15 @@ class _EditBookPageState extends State<EditBookPage> {
   @override
   void initState() {
     super.initState();
-    // currentUser = widget.user;
+    currentUser = widget.user;
+    currentBook = widget.book;
+    sqLiteService = SQLiteService();
+    sqLiteService.initDB().whenComplete(() async {
+      final books = await sqLiteService.getBooksForUser(currentUser.id);
+      setState(() {
+        _books = books;
+      });
+    });
     _titleController.addListener(_updateCanSaveChanges);
     _authorController.addListener(_updateCanSaveChanges);
     _publisherController.addListener(_updateCanSaveChanges);

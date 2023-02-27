@@ -80,8 +80,9 @@ class _MainPageState extends State<MainPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyBooksPage()),
+                                            builder: (context) => MyBooksPage(
+                                                  user: currentUser,
+                                                )),
                                       );
                                     },
                                     child: const ListTile(

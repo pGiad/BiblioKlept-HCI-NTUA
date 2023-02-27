@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -69,6 +67,7 @@ class User {
     return record;
   }
 }
+
 class Book {
   int? id;
   String? title;
@@ -79,6 +78,7 @@ class Book {
   String? category;
   String? condition;
   int? yearofpurchase;
+  int? userID;
 
   Book(
       {this.id,
@@ -89,7 +89,8 @@ class Book {
       this.numberofpages,
       this.category,
       this.condition,
-      this.yearofpurchase});
+      this.yearofpurchase,
+      this.userID});
 
   Book.fromMap(Map<String, dynamic> book)
       : id = book['id'],
@@ -100,7 +101,8 @@ class Book {
         numberofpages = book['numberofpages'],
         category = book['category'],
         condition = book['condition'],
-        yearofpurchase = book['yearofpurchase'];
+        yearofpurchase = book['yearofpurchase'],
+        userID = book['userID'];
 
   Map<String, dynamic> toMap() {
     final record = {
@@ -112,11 +114,13 @@ class Book {
       'numberofpages': numberofpages,
       'category': category,
       'condition': condition,
-      'yearofpurchase': yearofpurchase
+      'yearofpurchase': yearofpurchase,
+      'userID': userID
     };
     return record;
   }
 }
+
 class SQLiteService {
   // DB initialization
   Future<Database> initDB() async {
@@ -137,7 +141,7 @@ class SQLiteService {
             categories TEXT
           )
           ''');
-          // Create book table
+        // Create book table
         await db.execute('''
           CREATE TABLE book (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -148,7 +152,9 @@ class SQLiteService {
             numberofpages INTEGER,
             category TEXT,
             condition TEXT,
-            yearofpurchase INTEGER
+            yearofpurchase INTEGER,
+            userID INTEGER,
+            FOREIGN KEY (userID) REFERENCES users(id)
           )
           ''');
       },
@@ -226,10 +232,9 @@ class SQLiteService {
   //   return queryResult.map((e) => Playlist.fromMap(e)).toList();
   // }
 
-
-/* ############### BOOK ###############
-  */
-
+/* 
+############### BOOK ###############
+*/
 
 // Retrieve all book from db
   Future<List<Book>> getBooks() async {
@@ -240,6 +245,18 @@ class SQLiteService {
 
     // Convert from db records to class instances
     return queryResult.map((e) => Book.fromMap(e)).toList();
+  }
+
+  Future<List<Book>> getBooksForUser(int? userID) async {
+    final db = await initDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      'book',
+      where: 'userID = ?',
+      whereArgs: [userID],
+    );
+    return List.generate(maps.length, (i) {
+      return Book.fromMap(maps[i]);
+    });
   }
 
   /// Add [Book] [Book] to db. Returns the primary key of the record.
