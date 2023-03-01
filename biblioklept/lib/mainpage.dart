@@ -1,5 +1,6 @@
 import 'package:biblioklept/booksfound.dart';
 import 'package:biblioklept/booksnearyou.dart';
+import 'package:biblioklept/login_page.dart';
 import 'package:biblioklept/mybooks.dart';
 import 'package:biblioklept/receivedrequests.dart';
 import 'package:flutter/material.dart';
@@ -256,6 +257,63 @@ class _MainPageState extends State<MainPage> {
                                     child: const ListTile(
                                       title: Text(
                                         'Edit Profile',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 112, 4, 80)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await showDialog<bool>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                                content: const Text(
+                                                    'Are you sure you want to log out?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                      onPressed: ((() =>
+                                                          Navigator.pop(
+                                                              context, false))),
+                                                      style: TextButton.styleFrom(
+                                                          foregroundColor:
+                                                              const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  112,
+                                                                  4,
+                                                                  80)),
+                                                      child: const Text('No')),
+                                                  TextButton(
+                                                      onPressed: ((() {
+                                                        Navigator.pushAndRemoveUntil(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        LoginPage()),
+                                                            (r) {
+                                                          return false;
+                                                        });
+                                                      })),
+                                                      style: TextButton.styleFrom(
+                                                          foregroundColor:
+                                                              const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  112,
+                                                                  4,
+                                                                  80)),
+                                                      child: const Text('Yes')),
+                                                ],
+                                              ));
+                                    },
+                                    child: const ListTile(
+                                      title: Text(
+                                        'Log Out',
                                         style: TextStyle(
                                             color: Color.fromARGB(
                                                 255, 112, 4, 80)),
