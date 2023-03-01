@@ -80,7 +80,10 @@ class _BooksNearYouState extends State<BooksNearYouPage> {
                           AsyncSnapshot<User?> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                          return const CircularProgressIndicator(
+                            color: Color.fromARGB(255, 112, 4, 80),
+                            strokeWidth: 2,
+                          );
                         }
                         final user = snapshot.data;
                         final username = user?.username ?? 'Unknown';

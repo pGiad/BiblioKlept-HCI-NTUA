@@ -104,7 +104,10 @@ class _MyBooksState extends State<MyBooksPage> {
                           AsyncSnapshot<List<Book>> snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                              child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 112, 4, 80),
+                            strokeWidth: 2,
+                          ));
                         }
                         List<Book> books = snapshot.data!;
                         return SingleChildScrollView(
