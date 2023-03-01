@@ -5,7 +5,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
 
 class ScanQRPage extends StatefulWidget {
-  const ScanQRPage({super.key});
+  late User user;
+  ScanQRPage({Key? key, required this.user}) : super(key: key);
 
   @override
   _ScanQRPageState createState() => _ScanQRPageState();
@@ -27,7 +28,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   @override
   void initState() {
     super.initState();
-    // currentUser = widget.user;
+    currentUser = widget.user;
   }
 
   @override
@@ -57,12 +58,14 @@ class _ScanQRPageState extends State<ScanQRPage> {
                 padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(context,
+                    Navigator.pushAndRemoveUntil(context,
                         MaterialPageRoute(builder: (BuildContext context) {
                       return MainPage(
                         user: currentUser,
                       );
-                    }));
+                    }), (r) {
+                      return false;
+                    });
                   },
                   child: const Icon(
                     Icons.home,

@@ -230,8 +230,9 @@ class _MyBooksState extends State<MyBooksPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ScanQRPage()),
+                                          builder: (context) => ScanQRPage(
+                                                user: currentUser,
+                                              )),
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
