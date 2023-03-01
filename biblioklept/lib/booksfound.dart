@@ -6,7 +6,9 @@ import 'mainpage.dart';
 class BooksFoundPage extends StatefulWidget {
   late User user;
   late List<String> category;
-  BooksFoundPage({Key? key, required this.user, required this.category})
+  late String? query;
+  BooksFoundPage(
+      {Key? key, required this.user, required this.category, this.query})
       : super(key: key);
 
   @override
@@ -25,8 +27,13 @@ class _BooksFoundState extends State<BooksFoundPage> {
     currentUser = widget.user;
     sqLiteService = SQLiteService();
     sqLiteService.initDB().whenComplete(() async {
-      final books = await sqLiteService.getBooksByCategories(
-          widget.category, currentUser.id!);
+      final List<Book> books;
+      if (widget.query == null) {
+        books = await sqLiteService.getBooksByCategories(
+            widget.category, currentUser.id!);
+      } else {
+        books = await sqLiteService.searchBooks(widget.query!);
+      }
       setState(() {
         _books = books;
       });

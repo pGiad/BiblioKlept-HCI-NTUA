@@ -291,6 +291,19 @@ class SQLiteService {
     return result.map((json) => Book.fromMap(json)).toList();
   }
 
+  Future<List<Book>> searchBooks(String query) async {
+    final db = await initDB();
+
+    final result = await db.query(
+      'book',
+      where:
+          'title LIKE ? OR author LIKE ? OR category LIKE ? OR condition LIKE ?',
+      whereArgs: ['%$query%', '%$query%', '%$query%', '%$query%'],
+    );
+
+    return result.map((e) => Book.fromMap(e)).toList();
+  }
+
   /// Add [Book] [Book] to db. Returns the primary key of the record.
   Future<int> addBook(Book book) async {
     // Connection with db.
