@@ -1,5 +1,5 @@
 # HCI-BiblioKlept
-Semester project for Human-Computer Interaction class at ECE NTUA
+Semester project for Human-Computer Interaction class at ECE NTUA.
 Used Flutter in order to create a mobile app which is used to trade books with other users.
 
 # How to run
